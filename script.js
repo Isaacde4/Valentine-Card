@@ -63,3 +63,38 @@ function spawnHearts() {
         }, i * 100);
     }
 }
+// ... keep your window.onload as it was ...
+
+function revealLetter() {
+    const cover = document.getElementById('envelopeCover');
+    const letter = document.getElementById('letter');
+
+    // Fade out and move the envelope cover
+    cover.style.transform = "translateY(-100px) rotate(-5deg)";
+    cover.style.opacity = "0";
+    
+    setTimeout(() => {
+        cover.classList.add('hidden'); // Remove cover from layout
+        letter.classList.remove('hidden'); // Show the letter
+    }, 400);
+}
+
+// Updated respond function to prevent overlapping clicks
+function respond(choice, event) {
+    event.stopPropagation(); // Stops the revealLetter function from firing again
+    
+    const params = new URLSearchParams(window.location.search);
+    const sender = params.get('sender');
+    const receiver = params.get('receiver');
+
+    document.getElementById('cardView').classList.add('hidden');
+    document.getElementById('successScreen').classList.remove('hidden');
+    
+    const resultText = document.getElementById('resultText');
+    if (choice === 'yes') {
+        resultText.innerText = `Yay! ${receiver} said YES! ${sender} will be the happiest person! ❤️`;
+        spawnHearts();
+    } else {
+        resultText.innerText = `${sender} will be heartbroken... 💔`;
+    }
+}
