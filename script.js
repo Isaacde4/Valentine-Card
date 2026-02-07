@@ -1,91 +1,84 @@
-// Elements
-const formContainer = document.getElementById("formContainer");
+// ===== ELEMENTS =====
+const form = document.getElementById("formContainer");
+const envelopeView = document.getElementById("envelopeContainer");
+const envelope = document.getElementById("envelope");
+const flap = document.getElementById("flap");
+const card = document.getElementById("card");
+const message = document.getElementById("message");
+
 const senderInput = document.getElementById("sender");
 const receiverInput = document.getElementById("receiver");
-const messageInput = document.getElementById("message");
+const linkBox = document.getElementById("shareLink");
+
 const generateBtn = document.getElementById("generateLink");
-const shareLinkInput = document.getElementById("shareLink");
 const whatsappBtn = document.getElementById("whatsappBtn");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const hearts = document.getElementById("hearts");
 
-const envelopeContainer = document.getElementById("envelopeContainer");
-const flap = document.getElementById("flap");
-const fullMessageElem = document.getElementById("fullMessage");
-const acceptBtn = document.getElementById("accept");
-const declineBtn = document.getElementById("decline");
-const heartsContainer = document.getElementById("heartsContainer");
+// ===== URL PARAMS =====
+const params = new URLSearchParams(window.location.search);
+const sender = params.get("s");
+const receiver = params.get("r");
 
-// Create shareable link
-generateBtn.addEventListener("click", function() {
-    const sender = encodeURIComponent(senderInput.value);
-    const receiver = encodeURIComponent(receiverInput.value);
-    const message = encodeURIComponent(messageInput.value);
+// ===== RECEIVER MODE =====
+if (sender && receiver) {
+  form.style.display = "none";
+  envelopeView.style.display = "flex";
 
-    if(!sender || !receiver){
-        alert("Please enter both your name and recipient name.");
-        return;
-    }
-
-    const url = `${window.location.origin}${window.location.pathname}?sender=${sender}&receiver=${receiver}&msg=${message}`;
-    shareLinkInput.value = url;
-    shareLinkInput.select();
-    document.execCommand("copy");
-    alert("Link copied! Send it to your Valentine 💖");
-
-    // WhatsApp share button
-    whatsappBtn.classList.remove("hidden");
-    const whatsappText = `Hi ${decodeURIComponent(receiver)}, check out your Valentine card: ${url}`;
-    const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
-    whatsappBtn.onclick = () => window.open(whatsappLink, "_blank");
-});
-
-// On page load: show envelope only if URL has sender & receiver (receiver view)
-window.addEventListener("load", function() {
-    const params = new URLSearchParams(window.location.search);
-    const sender = params.get("sender");
-    const receiver = params.get("receiver");
-    const msg = params.get("msg");
-
-    if(sender && receiver){
-        // Hide sender form
-        formContainer.classList.add("hidden");
-        // Show envelope for receiver
-        envelopeContainer.classList.remove("hidden");
-
-        // Construct full message
-        let finalMsg = msg ? `${msg}. Will you be my Valentine?` : "Will you be my Valentine?";
-        fullMessageElem.textContent = `${receiver}, ${finalMsg}`;
-        window.senderName = sender; // store globally
-    } else {
-        // No URL params → sender view
-        envelopeContainer.classList.add("hidden");
-        formContainer.classList.remove("hidden");
-        whatsappBtn.classList.add("hidden");
-    }
-});
-
-// Envelope animation (click to open)
-envelopeContainer.addEventListener("click", function() {
+  envelope.onclick = () => {
     flap.style.transform = "rotateX(-180deg)";
-});
+    setTimeout(() => {
+      card.style.display = "block";
+      message.innerHTML = `${receiver}, will you be my Valentine? 💌`;
+    }, 500);
+  };
+}
 
-// Accept / Decline buttons
-acceptBtn.addEventListener("click", function() {
-    showHearts(`Yes! ${window.senderName} will be so happy!`);
-});
+// ===== GENERATE LINK =====
+generateBtn.onclick = () => {
+  const s = senderInput.value.trim();
+  const r = receiverInput.value.trim();
 
-declineBtn.addEventListener("click", function() {
-    fullMessageElem.textContent = `No. ${window.senderName} will be sad.`;
-});
+  if (!s || !r) {
+    alert("Please fill in both names");
+    return;
+  }
 
-// Heart bubbles animation
-function showHearts(text){
-    fullMessageElem.textContent = text;
-    for(let i=0; i<30; i++){
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.style.left = Math.random() * 90 + "%";
-        heart.style.animationDuration = 3 + Math.random() * 2 + "s";
-        heartsContainer.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-    }
+  const base = window.location.origin + window.location.pathname;
+  const link = `${base}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}`;
+
+  linkBox.style.display = "block";
+  linkBox.value = link;
+  linkBox.select();
+  document.execCommand("copy");
+
+  whatsappBtn.style.display = "block";
+
+  const text = `I made a Valentine card for you 💖\n\n${link}`;
+  const waLink = `https://wa.me/?text=${encodeURIComponent(text)}`;
+
+  whatsappBtn.onclick = () => {
+    window.open(waLink, "_blank");
+  };
+};
+
+// ===== YES =====
+yesBtn.onclick = () => {
+  message.innerHTML = `${sender} will be so happy 💖`;
+  for (let i = 0; i < 25; i++) createHeart();
+};
+
+// ===== NO =====
+noBtn.onclick = () => {
+  message.innerHTML = `${sender} will be sad 💔`;
+};
+
+// ===== HEARTS =====
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.style.left = Math.random() * 100 + "vw";
+  hearts.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
 }
