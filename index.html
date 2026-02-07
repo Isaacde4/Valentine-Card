@@ -3,53 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine's Day Card</title>
+  <title>Valentine Card</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- BACKGROUND FLOATING HEARTS -->
-  <div class="background-hearts"></div>
-
-  <!-- FORM: Sender fills info -->
-  <div class="form-container">
-    <h2>Fill Your Valentine Card 💌</h2>
-    <form id="cardForm">
-      <input type="text" id="sender" placeholder="Your Name" required>
-      <input type="text" id="recipient" placeholder="Recipient Name" required>
-      <textarea id="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Create Card</button>
-    </form>
+  <!-- Sender form -->
+  <div id="formContainer">
+    <input type="text" id="sender" placeholder="Your Name">
+    <input type="text" id="receiver" placeholder="Recipient Name">
+    <label for="message">Optional</label>
+    <textarea id="message" placeholder="Type your message"></textarea>
+    <button id="generateLink">Generate Link</button>
+    <input type="text" id="shareLink" readonly placeholder="Your shareable link will appear here">
   </div>
 
-  <!-- ENVELOPE: Hidden initially -->
-  <div class="envelope-container" id="envelopeContainer" style="display:none; z-index:2;">
-    <div class="envelope" id="envelope">
-      <div class="flap"></div>
-      <div class="body">
-        <div id="envelopeSender" class="envelope-sender"></div>
-        <div class="front-text">💌 Click to Open</div>
-      </div>
-      <div class="seal"></div>
-    </div>
-  </div>
-
-  <!-- CARD MESSAGE + RESPONSE BUTTONS -->
-  <div class="card-message" id="cardMessage" style="display:none; z-index:3;">
-    <div class="paper">
-      <h3>To: <span id="displayRecipient"></span></h3>
-      <p id="displayMessage"></p>
-      <h4>From: <span id="displaySender"></span></h4>
-
-      <div id="responseButtons">
-        <button id="acceptBtn">Accept ❤️</button>
-        <button id="declineBtn">Decline 💔</button>
+  <!-- Envelope shown only for receiver -->
+  <div id="envelopeContainer" class="hidden">
+    <div id="envelope">
+      <div id="flap"></div>
+      <div id="envelopeBody">
+        <div id="messageSheet">
+          <p id="fullMessage"></p>
+          <div id="responseButtons">
+            <button id="accept">Accept</button>
+            <button id="decline">Decline</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- LOVE BUBBLES -->
-  <div id="loveBubbles" class="love-bubbles" style="display:none;"></div>
+  <!-- Heart bubbles -->
+  <div id="heartsContainer"></div>
 
   <script src="script.js"></script>
 </body>

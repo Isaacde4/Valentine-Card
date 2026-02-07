@@ -1,98 +1,107 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Elements
+const formContainer = document.getElementById("formContainer");
+const senderInput = document.getElementById("sender");
+const receiverInput = document.getElementById("receiver");
+const messageInput = document.getElementById("message");
+const generateBtn = document.getElementById("generateLink");
+const shareLinkInput = document.getElementById("shareLink");
 
-  const form = document.getElementById("cardForm");
-  const envelopeContainer = document.getElementById("envelopeContainer");
-  const envelope = document.getElementById("envelope");
-  const cardMessage = document.getElementById("cardMessage");
+const envelopeContainer = document.getElementById("envelopeContainer");
+const flap = document.getElementById("flap");
+const fullMessageElem = document.getElementById("fullMessage");
+const acceptBtn = document.getElementById("accept");
+const declineBtn = document.getElementById("decline");
+const heartsContainer = document.getElementById("heartsContainer");
 
-  const acceptBtn = document.getElementById("acceptBtn");
-  const declineBtn = document.getElementById("declineBtn");
-  const loveBubbles = document.getElementById("loveBubbles");
+// Create link
+generateBtn.addEventListener("click", function() {
+    const sender = encodeURIComponent(senderInput.value);
+    const receiver = encodeURIComponent(receiverInput.value);
+    const message = encodeURIComponent(messageInput.value);
 
-  const backgroundHeartsContainer = document.querySelector(".background-hearts");
-
-  let senderName = "";
-  let recipientName = "";
-
-  // FORM SUBMIT
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    senderName = document.getElementById("sender").value;
-    recipientName = document.getElementById("recipient").value;
-    const message = document.getElementById("message").value;
-
-    document.getElementById("displaySender").textContent = senderName;
-    document.getElementById("displayRecipient").textContent = recipientName;
-    document.getElementById("displayMessage").textContent = message;
-
-    document.getElementById("envelopeSender").textContent = `From: ${senderName}`;
-
-    form.style.display = "none";
-    envelopeContainer.style.display = "block";
-  });
-
-  // ENVELOPE CLICK
-  envelope.addEventListener("click", () => {
-    envelope.classList.add("open");
-    setTimeout(() => {
-      envelopeContainer.style.display = "none";
-      cardMessage.style.display = "block";
-    }, 800);
-  });
-
-  // ACCEPT BUTTON CLICK
-  acceptBtn.addEventListener("click", () => {
-    loveBubbles.style.display = "block";
-    createBubbles(20);
-
-    const happyMessage = document.createElement("h3");
-    happyMessage.textContent = `${recipientName} accepted! ${senderName} will be so happy ❤️`;
-    loveBubbles.appendChild(happyMessage);
-
-    document.getElementById("responseButtons").style.display = "none";
-  });
-
-  // DECLINE BUTTON CLICK
-  declineBtn.addEventListener("click", () => {
-    const sadMessage = document.createElement("h3");
-    sadMessage.textContent = `${recipientName} declined 💔. ${senderName} will be sad 😢`;
-    cardMessage.appendChild(sadMessage);
-
-    document.getElementById("responseButtons").style.display = "none";
-  });
-
-  // CREATE HEART BUBBLES
-  function createBubbles(num) {
-    const colors = ["#ff4d6d", "#ff99aa", "#ff66cc", "#ff1a75"];
-    for (let i = 0; i < num; i++) {
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-
-      bubble.style.left = Math.random() * 90 + "%";
-      bubble.style.animationDuration = 2 + Math.random() * 2 + "s";
-
-      const size = 15 + Math.random() * 15;
-      bubble.style.width = bubble.style.height = size + "px";
-
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      bubble.style.backgroundColor = color;
-
-      loveBubbles.appendChild(bubble);
+    if(!sender || !receiver) {
+        alert("Please enter both your name and recipient name.");
+        return;
     }
-  }
 
-  // BACKGROUND FLOATING HEARTS
-  function createBackgroundHearts(num) {
-    const colors = ["#ff4d6d", "#ff99aa", "#ff66cc"];
-    for (let i = 0; i < num; i++) {
-      const heart = document.createElement("div");
-      heart.classList.add("bg-heart");
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = 5 + Math.random() * 5 + "s";
-      heart.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      backgroundHeartsContainer.appendChild(heart);
+    const url = `${window.location.origin}${window.location.pathname}?sender=${sender}&receiver=${receiver}&msg=${message}`;
+    shareLinkInput.value = url;
+    shareLinkInput.select();
+    document.execCommand("copy");
+    alert("Link copied! Send it to your Valentine 💖");
+});
+
+// On load: show envelope only if receiver opens link
+window.addEventListener("load", function() {
+    const params = new URLSearchParams(window.location.search);
+    const sender = params.get("sender");
+    const receiver = params.get("receiver");
+    const msg = params.get("msg");
+
+    if(sender && receiver) {
+        // Hide sender form
+        formContainer.classList.add("hidden");
+        // Show envelope for receiver
+        envelopeContainer.classList.remove("hidden");
+
+        // Construct full message
+        let finalMsg = msg ? `${msg}. Will you be my Valentine?` : "Will you be my Valentine?";
+        fullMessageElem.textContent = `${receiver}, ${finalMsg}`;
+        window.senderName = sender; // store for later
+    } else {
+        // No URL params → sender is creating the card
+        envelopeContainer.classList.add("hidden");
+        formContainer.classList.remove("hidden");
     }
-  }
+});
 
-  createBackgroundHearts(30);
+// Envelope animation (click to open)
+envelopeContainer.addEventListener("click", function() {
+    flap.style.transform = "rotateX(-180deg)";
+});
+
+// Accept / Decline buttons
+acceptBtn.addEventListener("click", function() {
+    showHearts(`Yes! ${window.senderName} will be so happy!`);
+});
+
+declineBtn.addEventListener("click", function() {
+    fullMessageElem.textContent = `No. ${window.senderName} will be sad.`;
+});
+
+// Heart bubbles
+function showHearts(text) {
+    fullMessageElem.textContent = text;
+    for(let i=0; i<30; i++){
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * 90 + "%";
+        heart.style.animationDuration = 3 + Math.random() * 2 + "s";
+        heartsContainer.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }
+}
+const whatsappBtn = document.getElementById("whatsappBtn");
+
+generateBtn.addEventListener("click", function() {
+    const sender = encodeURIComponent(senderInput.value);
+    const receiver = encodeURIComponent(receiverInput.value);
+    const message = encodeURIComponent(messageInput.value);
+
+    if(!sender || !receiver) {
+        alert("Please enter both your name and recipient name.");
+        return;
+    }
+
+    const url = `${window.location.origin}${window.location.pathname}?sender=${sender}&receiver=${receiver}&msg=${message}`;
+    shareLinkInput.value = url;
+    shareLinkInput.select();
+    document.execCommand("copy");
+    alert("Link copied! Send it to your Valentine 💖");
+
+    // Show WhatsApp button
+    whatsappBtn.classList.remove("hidden");
+    const whatsappText = `Hi ${receiver}, check out your Valentine card: ${url}`;
+    const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
+    whatsappBtn.onclick = () => window.open(whatsappLink, "_blank");
 });
