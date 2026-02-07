@@ -1,185 +1,107 @@
-/* ===== RESET ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+:root {
+    --pink: #ff4d6d;
+    --light-pink: #fff0f3;
+    --deep-red: #c9184a;
 }
 
-/* ===== BODY ===== */
 body {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffe6eb, #fff);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--light-pink);
+    font-family: 'Poppins', sans-serif;
 }
 
-/* ===== FORM ===== */
-#formContainer {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 350px;
-  text-align: center;
+.hidden { display: none !important; }
+
+/* Form Styling */
+.form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
 }
 
-#formContainer h1 {
-  margin-bottom: 15px;
+.title { font-family: 'Dancing Script', cursive; color: var(--pink); font-size: 2rem; }
+
+.input-box { text-align: left; margin-bottom: 15px; }
+.input-box label { display: block; font-weight: 600; margin-bottom: 5px; color: var(--deep-red); }
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--light-pink);
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
-#formContainer input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.share-btn {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
 }
 
-#generateLink {
-  padding: 10px;
-  width: 100%;
-  background: #ff4d6d;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+/* Envelope Styling */
+.envelope-wrapper { position: relative; width: 300px; height: 200px; cursor: pointer; }
+
+.envelope {
+    position: absolute;
+    width: 100%; height: 100%;
+    background: var(--pink);
+    border-radius: 0 0 10px 10px;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
 }
 
-#shareLink {
-  display: none;
-  margin-top: 10px;
+.front { color: white; text-align: center; }
+.front h2 { font-family: 'Dancing Script', cursive; margin: 0; }
+
+.letter {
+    position: absolute;
+    top: 5px; left: 10px; width: 280px;
+    background: white;
+    padding: 20px;
+    text-align: center;
+    transition: 0.8s;
+    z-index: 1;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* ===== ENVELOPE VIEW ===== */
-#envelopeContainer {
-  display: none;
-  flex-direction: column;
-  align-items: center;
+.envelope-wrapper.open .letter { transform: translateY(-150px); }
+
+.choice-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.yes { background: #ff4d6d; color: white; }
+.no { background: #888; color: white; }
+
+/* Heart Animation */
+.heart-pop {
+    position: absolute;
+    color: var(--pink);
+    font-size: 20px;
+    animation: fly 3s linear forwards;
 }
 
-/* ===== ENVELOPE ===== */
-#envelope {
-  position: relative;
-  width: 220px;
-  height: 140px;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-
-#body {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: white;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-}
-
-#flap {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #f5f5f5;
-  clip-path: polygon(0 0, 100% 0, 50% 50%);
-  transform-origin: top;
-  transition: transform 0.6s ease;
-}
-
-/* ===== CARD ===== */
-#card {
-  display: none;
-  background: #fffdf5;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-  text-align: center;
-  width: 90%;
-  max-width: 320px;
-}
-
-#message {
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-/* ===== BUTTONS ===== */
-.buttons button {
-  padding: 10px 15px;
-  margin: 5px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#yesBtn {
-  background: #ff4d6d;
-  color: white;
-}
-
-#noBtn {
-  background: #aaa;
-  color: white;
-}
-
-/* ===== HEARTS ===== */
-#hearts {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.heart {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
-  transform: rotate(45deg);
-  animation: float 4s linear;
-}
-
-.heart::before,
-.heart::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
-  border-radius: 50%;
-}
-
-.heart::before {
-  top: -10px;
-  left: 0;
-}
-
-.heart::after {
-  left: -10px;
-  top: 0;
-}
-
-@keyframes float {
-  from {
-    bottom: 0;
-    opacity: 1;
-  }
-  to {
-    bottom: 100%;
-    opacity: 0;
-  }
-}
-#whatsappBtn {
-  margin-top: 10px;
-  padding: 10px;
-  width: 100%;
-  background: #25D366;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+@keyframes fly {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-500px) scale(2); opacity: 0; }
 }

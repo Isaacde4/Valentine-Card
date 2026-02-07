@@ -1,71 +1,65 @@
 window.onload = () => {
     const params = new URLSearchParams(window.location.search);
     if (params.has('sender')) {
+        // If the URL has data, show the envelope
         document.getElementById('generator').classList.add('hidden');
         document.getElementById('cardView').classList.remove('hidden');
-        document.getElementById('fromLabel').innerText = "From " + params.get('sender');
+        document.getElementById('envelopeFrom').innerText = "From: " + params.get('sender');
         
-        const msg = params.get('msg') || "I have a special question for you...";
-        document.getElementById('displayMessage').innerText = msg;
+        let msg = params.get('msg');
+        document.getElementById('displayMessage').innerText = msg ? msg : "";
     }
 };
 
-function generateLink() {
+function shareToWhatsApp() {
     const sender = document.getElementById('senderName').value;
     const receiver = document.getElementById('receiverName').value;
     const msg = document.getElementById('customMessage').value;
 
     if (!sender || !receiver) {
-        alert("Please enter both names!");
+        alert("Please enter names first!");
         return;
     }
 
-    const baseUrl = window.location.href.split('?')[0];
-    const finalUrl = `${baseUrl}?sender=${encodeURIComponent(sender)}&receiver=${encodeURIComponent(receiver)}&msg=${encodeURIComponent(msg)}`;
+    // This creates the link based on your GitHub URL
+    const currentUrl = window.location.href.split('?')[0];
+    const link = `${currentUrl}?sender=${encodeURIComponent(sender)}&receiver=${encodeURIComponent(receiver)}&msg=${encodeURIComponent(msg)}`;
     
-    document.getElementById('rawLink').value = finalUrl;
-    document.getElementById('linkOutput').classList.remove('hidden');
-
-    // Share Links
-    const text = `Hi ${receiver}, open this message from ${sender}: ${finalUrl}`;
-    document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
-    document.getElementById('emailShare').href = `mailto:?subject=A Message for ${receiver}&body=${encodeURIComponent(text)}`;
-    document.getElementById('smsShare').href = `sms:?body=${encodeURIComponent(text)}`;
+    const whatsappText = `Hi ${receiver}, I have a surprise for you. Click here to open: ${link}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(whatsappText)}`, '_blank');
 }
 
 function openEnvelope() {
-    document.querySelector('.envelope-container').classList.add('open');
+    document.querySelector('.envelope-wrapper').classList.add('open');
 }
 
-function respond(answer, event) {
-    event.stopPropagation(); // Prevents clicking the button from closing/opening envelope
+function respond(choice) {
     const params = new URLSearchParams(window.location.search);
     const sender = params.get('sender');
     const receiver = params.get('receiver');
-    
+
     document.getElementById('cardView').classList.add('hidden');
-    document.getElementById('responseScreen').classList.remove('hidden');
+    document.getElementById('successScreen').classList.remove('hidden');
     
-    const textEl = document.getElementById('responseText');
-    if (answer === 'yes') {
-        textEl.innerText = `Yay! ${receiver} said Yes! ${sender} will be the happiest person alive! ❤️`;
-        startBubbles();
+    const resultText = document.getElementById('resultText');
+    if (choice === 'yes') {
+        resultText.innerText = `Yay! ${receiver} said YES! ${sender} will be so happy! ❤️`;
+        spawnHearts();
     } else {
-        textEl.innerText = `${sender} will be very sad... 💔`;
+        resultText.innerText = `Oh no! ${sender} will be very sad... 💔`;
     }
 }
 
-function startBubbles() {
+function spawnHearts() {
     for (let i = 0; i < 30; i++) {
         setTimeout(() => {
-            const b = document.createElement('div');
-            b.className = 'bubble';
-            const size = Math.random() * 20 + 10 + 'px';
-            b.style.width = size;
-            b.style.height = size;
-            b.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(b);
-            setTimeout(() => b.remove(), 4000);
-        }, i * 150);
+            const heart = document.createElement('div');
+            heart.className = 'heart-pop';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.bottom = '0';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }, i * 100);
     }
 }

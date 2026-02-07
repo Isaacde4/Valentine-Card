@@ -1,57 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Valentine Card 💌</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Surprise</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- ========= SENDER FORM ========= -->
-  <div id="formContainer" class="card-ui">
-    <h1>💖 Valentine Card</h1>
-
-    <div class="field">
-      <label>Your Name</label>
-      <input id="sender" type="text" placeholder="e.g. Kwame">
+    <div id="generator" class="form-container">
+        <h1 class="title">Create Your Message</h1>
+        <div class="input-box">
+            <label>From:</label>
+            <input type="text" id="senderName" placeholder="Your Name (e.g. Francis)">
+        </div>
+        <div class="input-box">
+            <label>To:</label>
+            <input type="text" id="receiverName" placeholder="Lover's Name">
+        </div>
+        <div class="input-box">
+            <label>Message (Optional):</label>
+            <textarea id="customMessage" placeholder="Type a sweet note..."></textarea>
+        </div>
+        <button class="share-btn" onclick="shareToWhatsApp()">Share to WhatsApp</button>
     </div>
 
-    <div class="field">
-      <label>Receiver's Name</label>
-      <input id="receiver" type="text" placeholder="e.g. Mary">
+    <div id="cardView" class="hidden">
+        <div class="envelope-wrapper" onclick="openEnvelope()">
+            <div class="envelope">
+                <div class="flap"></div>
+                <div class="front">
+                    <h2 id="envelopeFrom"></h2>
+                    <p>Tap to open</p>
+                </div>
+            </div>
+            <div id="letter" class="letter">
+                <p id="displayMessage"></p>
+                <h2 class="question">Will you be my Valentine?</h2>
+                <div class="btn-group">
+                    <button class="choice-btn yes" onclick="respond('yes')">Yes</button>
+                    <button class="choice-btn no" onclick="respond('no')">No</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="field">
-      <label>Optional Message</label>
-      <textarea id="customMessage" placeholder="Say something sweet (optional)"></textarea>
+    <div id="successScreen" class="hidden">
+        <h1 id="resultText"></h1>
+        <div id="heartContainer"></div>
     </div>
 
-    <button id="generateLink">Generate Link</button>
-
-    <input id="shareLink" readonly>
-    <button id="whatsappBtn">Share on WhatsApp 💚</button>
-  </div>
-
-  <!-- ========= RECEIVER VIEW ========= -->
-  <div id="envelopeContainer">
-    <div id="envelope">
-      <div id="flap"></div>
-      <div id="body"></div>
-    </div>
-
-    <div id="card">
-      <p id="message"></p>
-
-      <div class="buttons">
-        <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">No 💔</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="hearts"></div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
