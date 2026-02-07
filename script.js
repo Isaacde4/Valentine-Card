@@ -1,85 +1,71 @@
-const form = document.getElementById("formContainer");
-const envelopeView = document.getElementById("envelopeContainer");
-const envelope = document.getElementById("envelope");
-const flap = document.getElementById("flap");
-const card = document.getElementById("card");
-const messageBox = document.getElementById("message");
+window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('sender')) {
+        document.getElementById('generator').classList.add('hidden');
+        document.getElementById('cardView').classList.remove('hidden');
+        document.getElementById('fromLabel').innerText = "From " + params.get('sender');
+        
+        const msg = params.get('msg') || "I have a special question for you...";
+        document.getElementById('displayMessage').innerText = msg;
+    }
+};
 
-const senderInput = document.getElementById("sender");
-const receiverInput = document.getElementById("receiver");
-const messageInput = document.getElementById("customMessage");
+function generateLink() {
+    const sender = document.getElementById('senderName').value;
+    const receiver = document.getElementById('receiverName').value;
+    const msg = document.getElementById('customMessage').value;
 
-const generateBtn = document.getElementById("generateLink");
-const whatsappBtn = document.getElementById("whatsappBtn");
-const linkBox = document.getElementById("shareLink");
+    if (!sender || !receiver) {
+        alert("Please enter both names!");
+        return;
+    }
 
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const hearts = document.getElementById("hearts");
+    const baseUrl = window.location.href.split('?')[0];
+    const finalUrl = `${baseUrl}?sender=${encodeURIComponent(sender)}&receiver=${encodeURIComponent(receiver)}&msg=${encodeURIComponent(msg)}`;
+    
+    document.getElementById('rawLink').value = finalUrl;
+    document.getElementById('linkOutput').classList.remove('hidden');
 
-const params = new URLSearchParams(window.location.search);
-const sender = params.get("s");
-const receiver = params.get("r");
-const msg = params.get("m");
-
-/* ===== RECEIVER MODE ===== */
-if (sender && receiver) {
-  form.style.display = "none";
-  envelopeView.style.display = "flex";
-
-  envelope.onclick = () => {
-    flap.style.transform = "rotateX(-180deg)";
-    setTimeout(() => {
-      envelope.style.display = "none";
-      card.style.display = "block";
-
-      let text = "";
-      if (msg) text += msg + "<br><br>";
-      text += `<strong>Will you be my Valentine?</strong> 💌`;
-
-      messageBox.innerHTML = text;
-    }, 500);
+    // Share Links
+    const text = `Hi ${receiver}, open this message from ${sender}: ${finalUrl}`;
+    document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    document.getElementById('emailShare').href = `mailto:?subject=A Message for ${receiver}&body=${encodeURIComponent(text)}`;
+    document.getElementById('smsShare').href = `sms:?body=${encodeURIComponent(text)}`;
 }
 
-/* ===== GENERATE LINK ===== */
-generateBtn.onclick = () => {
-  const s = senderInput.value.trim();
-  const r = receiverInput.value.trim();
-  const m = messageInput.value.trim();
+function openEnvelope() {
+    document.querySelector('.envelope-container').classList.add('open');
+}
 
-  if (!s || !r) {
-    alert("Please enter both names");
-    return;
-  }
+function respond(answer, event) {
+    event.stopPropagation(); // Prevents clicking the button from closing/opening envelope
+    const params = new URLSearchParams(window.location.search);
+    const sender = params.get('sender');
+    const receiver = params.get('receiver');
+    
+    document.getElementById('cardView').classList.add('hidden');
+    document.getElementById('responseScreen').classList.remove('hidden');
+    
+    const textEl = document.getElementById('responseText');
+    if (answer === 'yes') {
+        textEl.innerText = `Yay! ${receiver} said Yes! ${sender} will be the happiest person alive! ❤️`;
+        startBubbles();
+    } else {
+        textEl.innerText = `${sender} will be very sad... 💔`;
+    }
+}
 
-  const base = window.location.origin + window.location.pathname;
-  const link = `${base}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${encodeURIComponent(m)}`;
-
-  linkBox.style.display = "block";
-  linkBox.value = link;
-
-  whatsappBtn.style.display = "block";
-  whatsappBtn.onclick = () => {
-    window.location.href =
-      `https://wa.me/?text=${encodeURIComponent("I made a Valentine card for you 💖\n\n" + link)}`;
-  };
-};
-
-/* ===== YES / NO ===== */
-yesBtn.onclick = () => {
-  messageBox.innerHTML = `<strong>${sender}</strong> will be so happy 💖`;
-  for (let i = 0; i < 30; i++) createHeart();
-};
-
-noBtn.onclick = () => {
-  messageBox.innerHTML = `<strong>${sender}</strong> will be sad 💔`;
-};
-
-/* ===== HEARTS ===== */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.style.left = Math.random() * 100 + "vw";
-  hearts.appendChild(heart);
-  setTimeout(() => heart.remove(), 4000);
-}}
+function startBubbles() {
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            const size = Math.random() * 20 + 10 + 'px';
+            b.style.width = size;
+            b.style.height = size;
+            b.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 4000);
+        }, i * 150);
+    }
+}

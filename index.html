@@ -1,42 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine Card</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Valentine Card 💌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Sender form -->
-  <div id="formContainer">
-    <input type="text" id="sender" placeholder="Your Name">
-    <input type="text" id="receiver" placeholder="Recipient Name">
-    <label for="message">Optional</label>
-    <textarea id="message" placeholder="Type your message"></textarea>
+  <!-- ========= SENDER FORM ========= -->
+  <div id="formContainer" class="card-ui">
+    <h1>💖 Valentine Card</h1>
+
+    <div class="field">
+      <label>Your Name</label>
+      <input id="sender" type="text" placeholder="e.g. Kwame">
+    </div>
+
+    <div class="field">
+      <label>Receiver's Name</label>
+      <input id="receiver" type="text" placeholder="e.g. Mary">
+    </div>
+
+    <div class="field">
+      <label>Optional Message</label>
+      <textarea id="customMessage" placeholder="Say something sweet (optional)"></textarea>
+    </div>
+
     <button id="generateLink">Generate Link</button>
-    <input type="text" id="shareLink" readonly placeholder="Your shareable link will appear here">
-    <button id="whatsappBtn" class="hidden">Send via WhatsApp</button>
+
+    <input id="shareLink" readonly>
+    <button id="whatsappBtn">Share on WhatsApp 💚</button>
   </div>
 
-  <!-- Envelope shown only for receiver -->
-  <div id="envelopeContainer" class="hidden">
+  <!-- ========= RECEIVER VIEW ========= -->
+  <div id="envelopeContainer">
     <div id="envelope">
       <div id="flap"></div>
-      <div id="envelopeBody">
-        <div id="messageSheet">
-          <p id="fullMessage"></p>
-          <div id="responseButtons">
-            <button id="accept">Accept</button>
-            <button id="decline">Decline</button>
-          </div>
-        </div>
+      <div id="body"></div>
+    </div>
+
+    <div id="card">
+      <p id="message"></p>
+
+      <div class="buttons">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No 💔</button>
       </div>
     </div>
   </div>
 
-  <!-- Heart bubbles -->
-  <div id="heartsContainer"></div>
+  <div id="hearts"></div>
 
   <script src="script.js"></script>
 </body>
