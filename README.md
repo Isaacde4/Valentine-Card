@@ -1,2 +1,3 @@
-# Valentine-Card
-My interactive Valentine’s Day card project
+# Valentine Card Project
+This is my interactive Valentine’s Day card hosted on GitHub.
+
