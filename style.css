@@ -1,0 +1,264 @@
+/* BODY STYLE */
+body {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  background-color: #ffe6e6;
+  padding: 30px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* FORM STYLE */
+input, textarea {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 90%;
+  max-width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #ff4d6d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* ENVELOPE CONTAINER */
+.envelope-container {
+  margin-top: 40px;
+}
+
+/* ENVELOPE STRUCTURE */
+.envelope {
+  position: relative;
+  width: 250px;
+  height: 150px;
+  margin: 0 auto;
+  cursor: pointer;
+  perspective: 600px;
+}
+
+/* FLAP */
+.envelope .flap {
+  width: 0;
+  height: 0;
+  border-left: 125px solid transparent;
+  border-right: 125px solid transparent;
+  border-bottom: 60px solid #ffffff; /* White flap */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  transform-origin: top center;
+  transition: transform 0.8s ease-in-out;
+}
+
+/* FLAP OPEN */
+.envelope.open .flap {
+  transform: rotateX(180deg);
+}
+
+/* ENVELOPE BODY */
+.envelope .body {
+  width: 100%;
+  height: 90px;
+  background-color: #ffffff;  /* White envelope body */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #333; /* dark text */
+  z-index: 1;
+}
+
+/* TEXT ON ENVELOPE */
+.front-text {
+  margin-top: 10px;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: normal;
+  color: #333;
+}
+
+.envelope-sender {
+  margin-top: 5px;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: normal;
+  color: #333;
+}
+
+/* GOLD SEAL */
+.seal {
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle at 30% 30%, #fff200, #d4af37);
+  border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  box-shadow: 0 0 5px #d4af37;
+}
+
+/* CARD MESSAGE / PAPER */
+.paper {
+  background-color: #fff8f0; /* paper color */
+  padding: 25px 20px;
+  max-width: 300px;
+  margin: 20px auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+  font-family: 'Georgia', serif;
+  color: #728e21;
+}
+
+.paper h3, .paper h4 {
+  margin: 10px 0;
+}
+
+.paper p {
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+/* RESPONSE BUTTONS */
+#responseButtons button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#acceptBtn {
+  background-color: #ff4d6d;
+  color: white;
+}
+
+#declineBtn {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* LOVE BUBBLES (HEART SHAPES) */
+.love-bubbles {
+  position: relative;
+  margin-top: 20px;
+  height: 200px;
+}
+
+.bubble {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  transform: rotate(-45deg);
+  animation: rise 3s linear forwards;
+  background-color: red;
+}
+
+.bubble::before,
+.bubble::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: inherit; /* inherit color from main bubble */
+}
+
+.bubble::before {
+  top: -50%;
+  left: 0;
+}
+
+.bubble::after {
+  top: 0;
+  left: 50%;
+}
+
+/* BUBBLE ANIMATION */
+@keyframes rise {
+  0% { transform: translateY(0) rotate(-45deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-200px) rotate(-45deg) scale(1.5); opacity: 0; }
+}
+
+/* BACKGROUND FLOATING HEARTS */
+.background-hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.background-hearts .bg-heart {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  transform: rotate(-45deg);
+  opacity: 0.7;
+  animation: floatHearts linear infinite;
+  background-color: pink;
+}
+
+.background-hearts .bg-heart::before,
+.background-hearts .bg-heart::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: inherit;
+}
+
+.background-hearts .bg-heart::before {
+  top: -50%;
+  left: 0;
+}
+
+.background-hearts .bg-heart::after {
+  top: 0;
+  left: 50%;
+}
+
+@keyframes floatHearts {
+  0% { transform: translateY(100vh) translateX(0) rotate(-45deg); opacity: 0.5; }
+  100% { transform: translateY(-100vh) translateX(50px) rotate(-45deg); opacity: 0; }
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 500px) {
+  .envelope {
+    width: 200px;
+    height: 120px;
+  }
+  .envelope .flap {
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 50px solid #ffffff;
+  }
+  .envelope .body {
+    height: 70px;
+  }
+  input, textarea {
+    width: 90%;
+  }
+}

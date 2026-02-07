@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Day Card</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- BACKGROUND FLOATING HEARTS -->
+  <div class="background-hearts"></div>
+
+  <!-- FORM: Sender fills info -->
+  <div class="form-container">
+    <h2>Fill Your Valentine Card 💌</h2>
+    <form id="cardForm">
+      <input type="text" id="sender" placeholder="Your Name" required>
+      <input type="text" id="recipient" placeholder="Recipient Name" required>
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Create Card</button>
+    </form>
+  </div>
+
+  <!-- ENVELOPE: Hidden initially -->
+  <div class="envelope-container" id="envelopeContainer" style="display:none; z-index:2;">
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+      <div class="body">
+        <div id="envelopeSender" class="envelope-sender"></div>
+        <div class="front-text">💌 Click to Open</div>
+      </div>
+      <div class="seal"></div>
+    </div>
+  </div>
+
+  <!-- CARD MESSAGE + RESPONSE BUTTONS -->
+  <div class="card-message" id="cardMessage" style="display:none; z-index:3;">
+    <div class="paper">
+      <h3>To: <span id="displayRecipient"></span></h3>
+      <p id="displayMessage"></p>
+      <h4>From: <span id="displaySender"></span></h4>
+
+      <div id="responseButtons">
+        <button id="acceptBtn">Accept ❤️</button>
+        <button id="declineBtn">Decline 💔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOVE BUBBLES -->
+  <div id="loveBubbles" class="love-bubbles" style="display:none;"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
