@@ -26,22 +26,24 @@
         <button class="share-btn" onclick="shareToWhatsApp()">Share to WhatsApp</button>
     </div>
 
-   <div id="cardView" class="hidden">
-    <div id="envelopeContainer" class="envelope-container" onclick="revealLetter()">
-        <div id="envelopeCover" class="envelope-cover">
-            <div class="heart-seal">❤️</div>
-            <h2 id="envelopeFrom"></h2>
-            <p class="tap-instruction">Tap here to reveal your message</p>
+  <div id="cardView" class="hidden">
+    <div id="envelopeContainer" class="envelope-wrapper" onclick="revealLetter()">
+        <div id="mainEnvelope" class="envelope">
+            <div class="flap"></div>
+            <div class="pocket">
+                <div class="envelope-text">
+                    <h2 id="envelopeFrom"></h2>
+                    <p>Tap to open</p>
+                </div>
+            </div>
         </div>
 
         <div id="letter" class="letter-box hidden">
-            <div class="letter-content">
-                <p id="displayMessage"></p>
-                <h2 class="question">Will you be my Valentine?</h2>
-                <div class="btn-group">
-                    <button class="choice-btn yes" onclick="respond('yes', event)">Yes! ❤️</button>
-                    <button class="choice-btn no" onclick="respond('no', event)">No 💔</button>
-                </div>
+            <p id="displayMessage" class="personal-msg"></p>
+            <h2 class="question">Will you be my Valentine?</h2>
+            <div class="btn-group">
+                <button class="choice-btn yes" onclick="respond('yes', event)">Yes! ❤️</button>
+                <button class="choice-btn no" onclick="respond('no', event)">No 💔</button>
             </div>
         </div>
     </div>

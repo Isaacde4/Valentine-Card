@@ -98,3 +98,21 @@ function respond(choice, event) {
         resultText.innerText = `${sender} will be heartbroken... 💔`;
     }
 }
+function revealLetter() {
+    const envelope = document.getElementById('mainEnvelope');
+    const letter = document.getElementById('letter');
+
+    // 1. Open the flap
+    envelope.classList.add('open');
+
+    // 2. Fade out envelope and show letter
+    setTimeout(() => {
+        envelope.classList.add('fade-out');
+        
+        setTimeout(() => {
+            envelope.classList.add('hidden');
+            letter.classList.remove('hidden');
+            letter.style.position = "relative"; // Bring back to normal flow
+        }, 500);
+    }, 600);
+}
