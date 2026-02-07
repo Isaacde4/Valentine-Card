@@ -1,17 +1,18 @@
-// ===== ELEMENTS =====
 const form = document.getElementById("formContainer");
 const envelopeView = document.getElementById("envelopeContainer");
 const envelope = document.getElementById("envelope");
 const flap = document.getElementById("flap");
 const card = document.getElementById("card");
-const message = document.getElementById("message");
+const messageBox = document.getElementById("message");
 
 const senderInput = document.getElementById("sender");
 const receiverInput = document.getElementById("receiver");
-const linkBox = document.getElementById("shareLink");
+const customMessageInput = document.getElementById("customMessage");
 
 const generateBtn = document.getElementById("generateLink");
 const whatsappBtn = document.getElementById("whatsappBtn");
+const linkBox = document.getElementById("shareLink");
+
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const hearts = document.getElementById("hearts");
@@ -20,6 +21,7 @@ const hearts = document.getElementById("hearts");
 const params = new URLSearchParams(window.location.search);
 const sender = params.get("s");
 const receiver = params.get("r");
+const msg = params.get("m");
 
 // ===== RECEIVER MODE =====
 if (sender && receiver) {
@@ -29,8 +31,14 @@ if (sender && receiver) {
   envelope.onclick = () => {
     flap.style.transform = "rotateX(-180deg)";
     setTimeout(() => {
+      envelope.style.display = "none";
       card.style.display = "block";
-      message.innerHTML = `${receiver}, will you be my Valentine? 💌`;
+
+      let finalMessage = "";
+      if (msg) finalMessage += msg + "<br><br>";
+      finalMessage += `<strong>Will you be my Valentine?</strong> 💌`;
+
+      messageBox.innerHTML = finalMessage;
     }, 500);
   };
 }
@@ -39,14 +47,16 @@ if (sender && receiver) {
 generateBtn.onclick = () => {
   const s = senderInput.value.trim();
   const r = receiverInput.value.trim();
+  const m = customMessageInput.value.trim();
 
   if (!s || !r) {
-    alert("Please fill in both names");
+    alert("Please enter both names");
     return;
   }
 
   const base = window.location.origin + window.location.pathname;
-  const link = `${base}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}`;
+  const link =
+    `${base}?s=${encodeURIComponent(s)}&r=${encodeURIComponent(r)}&m=${encodeURIComponent(m)}`;
 
   linkBox.style.display = "block";
   linkBox.value = link;
@@ -56,22 +66,19 @@ generateBtn.onclick = () => {
   whatsappBtn.style.display = "block";
 
   const text = `I made a Valentine card for you 💖\n\n${link}`;
-  const waLink = `https://wa.me/?text=${encodeURIComponent(text)}`;
-
-  whatsappBtn.onclick = () => {
-    window.open(waLink, "_blank");
-  };
+  whatsappBtn.onclick = () =>
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
 };
 
 // ===== YES =====
 yesBtn.onclick = () => {
-  message.innerHTML = `${sender} will be so happy 💖`;
-  for (let i = 0; i < 25; i++) createHeart();
+  messageBox.innerHTML = `<strong>${sender}</strong> will be so happy 💖`;
+  for (let i = 0; i < 30; i++) createHeart();
 };
 
 // ===== NO =====
 noBtn.onclick = () => {
-  message.innerHTML = `${sender} will be sad 💔`;
+  messageBox.innerHTML = `<strong>${sender}</strong> will be sad 💔`;
 };
 
 // ===== HEARTS =====
